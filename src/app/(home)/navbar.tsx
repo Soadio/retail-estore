@@ -3,9 +3,14 @@
 import Link from "next/link"
 import { Poppins } from "next/font/google"
 import { usePathname } from "next/navigation"
+import {MenuIcon} from "lucide-react"
+import { NavbarSidebarProps } from "./navbar-sidebar"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { NavbarSidebar } from "./navbar-sidebar"
+import { useState } from "react"
+
 
 const poppins = Poppins({
     weight: [ "700"],
@@ -55,6 +60,7 @@ const navbarItems = [
 
 export const Navbar = () => {
     const pathname = usePathname();
+    const [isSideOpen, setIsSideOpen] = useState(false);
   return (
       <nav className="h-20 flex border-b justify-between font-medium bg-white">
           <Link href="/" className="flex items-center gap-2 px-4">
@@ -64,6 +70,12 @@ export const Navbar = () => {
               
               </span>
           </Link> 
+
+          <NavbarSidebar
+              items={navbarItems}
+              open={isSideOpen}
+              onOpenChange={setIsSideOpen}
+          />
 
           <div className="items-center gap-4 hidden lg:flex">
               {navbarItems.map((item) => (
@@ -79,7 +91,7 @@ export const Navbar = () => {
               ))}
           </div>
 
-          <div>
+          <div className="hidden lg:flex">
               <Button
                   asChild
                   variant="secondary"
@@ -99,7 +111,15 @@ export const Navbar = () => {
                   </Link>
               </Button>
             </div>
-
+          <div className="flex items-center lg:hidden ">
+              <Button
+                  variant="ghost"
+                  className="=size-12 border-transparent bg-white"
+                    onClick={() => setIsSideOpen(true)}
+              >
+                  <MenuIcon />
+              </Button>              
+</div>
     </nav>
   )
 }
